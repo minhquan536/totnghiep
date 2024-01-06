@@ -61,6 +61,12 @@ const routes = [
         color: "text-green-700",
     },
     {
+        label: "Image 2D Anime",
+        icon : ImageIcon,
+        href: "/image2d",
+        color: "text-red-700",
+    },
+    {
         label: "Settings",
         icon : Settings,
         href: "/settings",
