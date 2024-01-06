@@ -1,13 +1,13 @@
 "use client"; 
 import axios from "axios";
 import * as z from "zod";
-import { Code } from "lucide-react";
+import { Download, ImageIcon, MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage } from "openai";
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
+import toast from "react-hot-toast";
 
 
 
@@ -24,15 +24,16 @@ import { cn } from "@/lib/utils";
 import { formSchema } from "./constants";
 import { Loader } from "@/components/loader";
 import { useProModal } from "@/hooks/use-pro-modal";
-import toast from "react-hot-toast";
+import Image from "next/image";
+import { Card, CardFooter } from "@/components/ui/card";
 
 
 
 
-const CodePage = () => {
+const ConversationPage = () => {
     const proModal = useProModal();
     const router = useRouter();
-    const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
+    const [video, setVideo] = useState<string>();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -47,24 +48,18 @@ const CodePage = () => {
 
     const onSubmit = async(values: z.infer<typeof formSchema>) =>{
         try{
-          const userMessage: ChatCompletionRequestMessage ={
-            role:"user",
-            content:values.prompt,
-          };
+            setVideo(undefined);
 
-          const newMessages = [...messages, userMessage];
+          const response = await axios.post("/api/image2d", values);
 
-          const response = await axios.post("/api/code", {messages:newMessages,});
-
-          setMessages((current) =>[...current, userMessage, response.data]);
+          setVideo(response.data);
           
-
           form.reset();
         } catch(error:any){
             if (error?.response?.status === 403) {
                 proModal.onOpen();
             }else{
-                toast.error("Đã xảy ra lỗi")
+                toast.error("Something went wrong")
             }
         } finally {
            router.refresh();
@@ -76,11 +71,11 @@ const CodePage = () => {
     return ( 
         <div>
             <Heading 
-            title="Code Generation"
-             description="Generate code using descriptive text."
-             icon={Code}
-             iconColor="text-green-700"
-             bgColor="bg-green-700/10"
+            title="Image 2D Generation"
+             description="turn your prompt into image"
+             icon={ImageIcon}
+             iconColor="text-red-700"
+             bgColor="bg-red-700/10"
             />
             <div className="px-4 lg:px-8">
                 <div>
@@ -97,7 +92,7 @@ const CodePage = () => {
                                     <Input 
                                     className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                                     disabled ={isLoading}
-                                    placeholder="Simple toggle button using react hooks."
+                                    placeholder="1girl, green hair"
                                     {...field}
                                     />
                                 </FormControl>
@@ -118,43 +113,37 @@ const CodePage = () => {
                             <Loader/>
                         </div>
                     )}
-                    {messages.length === 0 && ! isLoading && (
-                        <Empty label="No conversation started."/>
+                    {!video &&  ! isLoading && (
+                        <Empty label="No image started."/>
                     )}
-                    <div className="flex flex-col-reverse gap-y-4">
-                        {messages.map((message)=>(
-                            <div 
-                            key={message.content}
-                            className={cn(
-                                "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                                message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
-                            )}
-                            >
-                                {message.role === "user" ? <UserAvatar/> : <BotAvatar/>}
-                                <ReactMarkdown
-                                components={{
-                                    pre: ({ node, ...props}) => (
-                                        <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
-                                            <pre {...props}/>
-                                        </div>
-                                    ),
-                                    code: ({ node, ...props}) => (
-                                        <code className="bg-black/10 rounded-lg p-1" {...props}/>
-                                    )
-                                }} className="text-sm overflow-hidden leading-7"
-                                
-                                >
-                                    {message.content || ""}
-                                </ReactMarkdown>
-                            </div>
-                        ))}
-
-                    </div>
-
+                    {video && (
+                        <Card
+                        key={video}
+                        className="rounded-lg overflow-hidden"
+                    >
+                        <div className="relative aspect-square">
+                            <Image
+                                alt="Image"
+                                fill
+                                src={video}
+                            />
+                        </div>
+                        <CardFooter className="p-2">
+                            <Button 
+                                onClick={() => window.open(video)}
+                                variant="secondary"
+                                className="w-full"
+                             >
+                                <Download className="h-4 w-4 mr-2"/>
+                                Download
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                    )}
                 </div>
             </div>
         </div>
      );
 }
  
-export default CodePage;
+export default ConversationPage;
