@@ -12,10 +12,10 @@ import {
     VideoIcon, 
     Music, 
     Code, 
-    Settings } from "lucide-react"
-
+    Settings ,BookCopyIcon} from "lucide-react"
 import { cn } from "@/lib/utils";    
 import { FreeCounter } from "./free-counter";
+import { trpc } from "@/app/(_trpc)/client";
     
 const montserrat = Montserrat({
     weight:"600", subsets: ["latin"]
@@ -67,6 +67,12 @@ const routes = [
         color: "text-red-700",
     },
     {
+        label: "Reading Document",
+        icon : BookCopyIcon,
+        href: "/thunghiem",
+        color: "text-blue-700",
+    },
+    {
         label: "Settings",
         icon : Settings,
         href: "/settings",
@@ -84,6 +90,7 @@ const Sidebar = ({
 }: SidebarProps) => {
 
     const pathname = usePathname();
+
     return ( 
         <div className="space-y-4 py-4 flex flex-col h-full bg-[#11827] text-white md:bg-[#11827]">
             <div className="px-3 py-2 flex-1">

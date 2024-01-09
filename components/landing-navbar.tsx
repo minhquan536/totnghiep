@@ -7,6 +7,7 @@ import { useAuth } from "@clerk/nextjs";
 
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import { trpc } from "@/app/(_trpc)/client";
 
 const font = Montserrat({
     weight: "600",
@@ -15,7 +16,7 @@ const font = Montserrat({
 
 export const LandingNavbar = () => {
     const { isSignedIn } = useAuth();
-
+    
     return (
         <nav className=" p-4 bg-transparent flex items-center justify-between">
             <Link href="/" className="flex items-center">
