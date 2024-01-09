@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { ModalProvider } from '@/components/modal-provider'
 import { ToasterProvider } from '@/components/toaster-provider'
 import { CrispProvider } from '@/components/crisp-provider'
+import Providers from '@/components/thunghiem/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,6 +19,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  
   // return (
   // <ClerkProvider>
   //   <html lang="en">
@@ -26,6 +28,7 @@ export default function RootLayout({
   // </ClerkProvider>
   // )
   return (
+      
     <html lang="en">
       <CrispProvider/>
       <head>
@@ -39,5 +42,6 @@ export default function RootLayout({
         </body>
       </ClerkProvider>
     </html>
+      
   );
 }
