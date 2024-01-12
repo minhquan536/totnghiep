@@ -2,8 +2,6 @@ import Navbar from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
 import { getApiLimitCount } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
-import { trpc } from "../(_trpc)/client";
-import { useAuth } from "@clerk/nextjs";
 import Chat from "@/components/chat/Chat";
 // import Providers from "@/components/chat/Providers";
 
