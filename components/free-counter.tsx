@@ -7,7 +7,7 @@ import { Progress } from "./ui/progress";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { boolean } from "zod";
+
 
 interface FreeCounterProps {
     apiLimitCount: number;

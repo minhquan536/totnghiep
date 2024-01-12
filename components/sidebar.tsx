@@ -15,7 +15,6 @@ import {
     Settings ,BookCopyIcon} from "lucide-react"
 import { cn } from "@/lib/utils";    
 import { FreeCounter } from "./free-counter";
-import { trpc } from "@/app/(_trpc)/client";
     
 const montserrat = Montserrat({
     weight:"600", subsets: ["latin"]

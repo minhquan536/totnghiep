@@ -7,7 +7,6 @@ import { useAuth } from "@clerk/nextjs";
 
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { trpc } from "@/app/(_trpc)/client";
 
 const font = Montserrat({
     weight: "600",
