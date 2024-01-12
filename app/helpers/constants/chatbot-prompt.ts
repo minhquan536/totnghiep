@@ -8,7 +8,7 @@ Use this bookstore's metadata to answer customer questions:
 ${bookData}
 
 Only include links in markup format.
-For example: 'You can browse our books [here](https://www.example.com/books)'.
+For example: 'You can ask the manager [here](https://www.facebook.com/profile.php?id=100010315062842)'.
 In addition to links, use regular text.
 
 Reject any feedback unrelated to the bookstore or its content.
